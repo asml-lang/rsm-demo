@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Demo App Two</title>
+  </head>
+  <body>
+    <!-- <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>,
+    Chromium <span id="chrome-version"></span>,
+    and Electron <span id="electron-version"></span>.
+    <br> -->
+    <h2>devices</h2>
+    <button id="get-devices">Get Devices</button>
+    <data id="devices"></data>
+    <hr>
+    <h2>data</h2>
+    <button id="get-data">Get Data</button>
+    <div id="data"></div>
+    <hr>
+    <h2>my data</h2>
+    <textarea id="my-data" name="" id="" cols="30" rows="10">
+        app two test data
+    </textarea>
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+  </body>
+</html>
