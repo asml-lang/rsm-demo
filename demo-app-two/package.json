@@ -18,5 +18,8 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^8.2.3"
+  },
+  "dependencies": {
+    "rsm-node": "^1.0.5"
   }
 }

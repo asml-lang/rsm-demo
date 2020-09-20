@@ -8,7 +8,7 @@
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
   <title>Demo App One</title>
   <link rel="stylesheet" href="./light.min.css">
-
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -17,21 +17,23 @@
     Chromium <span id="chrome-version"></span>,
     and Electron <span id="electron-version"></span>.
     <br> -->
+  <h1>Demo App One</h1>
+  <hr>
+  <h1></h1>
   <h2>devices</h2>
   <button id="get-devices">Get Devices</button>
-  <data id="devices"></data>
+  <div id="devices"></div>
   <hr>
   <h2>data</h2>
   <button id="get-data">Get Data</button>
   <div id="data"></div>
   <hr>
-  <h2>my data</h2>
   <label for="from">From:</label>
   <input type="text" id="from" value="demo-one@mail.upb.de">
   <label for="from">To:</label>
   <input type="text" id="to" value="demo-two@upb.de">
   <label for="from">Body:</label>
-  <textarea id="body" name="" id="" cols="20" rows="5">this is a text from demo one</textarea>
+  <textarea id="body" name="" id="" cols="20" rows="2">this is a text from demo one</textarea>
   <!-- You can also require other files to run in this process -->
   <script src="./renderer.js"></script>
 </body>

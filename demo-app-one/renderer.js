@@ -24,25 +24,27 @@ function $(selector) {
 function $All(selector) {
     return document.querySelectorAll(selector)
 }
-let states = [];
+
 $("#get-devices").addEventListener('click', function () {
     console.log('get devices');
-    rsm.getOtherStates(sampleModel.info.title).then(res => {
+    rsm.getDevices(sampleModel.info.title).then(res => {
         console.log(res);
-        states = res;
-        $('#devices').innerHTML = '';
+        $('#devices').innerHTML = '<ul></ul>';
 
         for (i = 0; i < res.length; i++) {
             var selecttag1 = document.createElement("input");
             selecttag1.setAttribute("type", "radio");
             selecttag1.setAttribute("name", "devices");
-            selecttag1.setAttribute("value", res[i]._id);
+            selecttag1.setAttribute("value", res[i].state_id);
             selecttag1.setAttribute("id", "irrSelectNo" + i);
 
             var lbl1 = document.createElement("label");
-            lbl1.innerHTML = res[i].devices[0].name;
-            $('#devices').appendChild(lbl1);
-            $('#devices').appendChild(selecttag1);
+            lbl1.innerHTML = res[i].name;
+
+            var li = document.createElement("li");
+            li.appendChild(selecttag1);
+            li.appendChild(lbl1);
+            $('#devices ul').appendChild(li);
         }
     })
 }, false)
@@ -63,11 +65,13 @@ $("#body").addEventListener('keyup', function () {
 $("#get-data").addEventListener('click', function () {
     if ($All('input[name=devices]') !== undefined) {
         const state_id = $('input[name=devices]:checked').value;
-        state = states.find(state => state._id == state_id);
-        data = JSON.parse(state.content);
-        $("#from").value = data.from
-        $("#to").value = data.to
-        $("#body").value = data.body
+        rsm.getStateById(state_id).then(res => {
+            console.log(res);
+            data = JSON.parse(res.content);
+            $("#from").value = data.from
+            $("#to").value = data.to
+            $("#body").value = data.body
+        })
     }
 }, false)
 

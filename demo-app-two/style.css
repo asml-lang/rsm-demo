@@ -1,0 +1,9 @@
+h2 {
+    width: 100%;
+}
+
+#devices ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
