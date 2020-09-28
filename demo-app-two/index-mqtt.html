@@ -4,23 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'">
   <title>Demo App Two - MQTT</title>
   <link rel="stylesheet" href="./dark.min.css">
   <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-  <h1>Demo App Two</h1>
-  <hr>
-  <h1></h1>
+  <div id="alert"></div>
   <h2>devices</h2>
   <button id="get-devices">Get Devices</button>
   <div id="devices"></div>
   <hr>
   <h2>data</h2>
-  <select name="models" id="models">
+  <select name="models" id="models" >
     <option value="">Select a state</option>
 
   </select>

@@ -12,20 +12,35 @@ const config = {
 }
 const rsm = new RunTimeStateMigration(config, onState, onRequestState, onDevice)
 
-rsm.addModel(sampleModel);
-var option = document.createElement("option");
-option.value = sampleModel.info.title;
-option.innerHTML = sampleModel.info.title;
-$("#models").appendChild(option);
-currentModel = '';
+if (rsm.addModel(sampleModel)) {
+    var option = document.createElement("option");
+    option.value = sampleModel.info.title;
+    option.innerHTML = sampleModel.info.title;
+    $("#models").appendChild(option);
+    currentModel = '';
+}
 
 
 console.log('introducing device ...');
 rsm.introduce();
 
 $("#get-devices").addEventListener('click', function () {
+    getDevices()
+}, false)
+
+$("#get-data").addEventListener('click', function () {
+    if ($All('input[name=devices]') !== undefined) {
+        const model_name = $("#models").value;
+        const device_id = $('input[name=devices]:checked').value;
+        rsm.getStateDevice(model_name, device_id);
+    }
+}, false)
+
+
+function getDevices() {
     console.log('get devices');
-    devices = rsm.getDevices(sampleModel.info.title);
+    const model_name = $("#models").value;
+    devices = rsm.getDevices(model_name);
     console.log(devices);
     $('#devices').innerHTML = '<ul></ul>';
 
@@ -45,30 +60,23 @@ $("#get-devices").addEventListener('click', function () {
         $('#devices ul').appendChild(li);
     }
 
-}, false)
-
-$("#get-data").addEventListener('click', function () {
-    if ($All('input[name=devices]') !== undefined) {
-        const model_name = $("#models").value;
-        const device_id = $('input[name=devices]:checked').value;
-        rsm.getStateDevice(model_name, device_id);
-    }
-}, false)
-
+}
 
 function onState(data) {
     console.log('onState', data);
 
-    // rsm.getStateById(state_id).then(res => {
-    //     console.log(res);
-    //     data = JSON.parse(res.content);
-    //     $("#from").value = data.from
-    //     $("#to").value = data.to
-    //     $("#body").value = data.body
-    // })
+    $("#from").value = data.state.from
+    $("#to").value = data.state.to
+    $("#body").value = data.state.body
+
 }
 
 function onDevice(data) {
+    $("#alert").innerHTML = `'${data.device.name}' joined '${data.model_name}'`;
+    $("#alert").style.opacity = '1';
+    setTimeout(() => {
+        $("#alert").style.opacity = '0';
+    }, 2000);
     console.log('onDevice', data);
 }
 
