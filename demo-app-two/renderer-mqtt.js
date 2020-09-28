@@ -12,6 +12,9 @@ const config = {
 }
 const rsm = new RunTimeStateMigration(config, onState, onRequestState, onDevice)
 
+$("#device").innerHTML = rsm.getDevice()._id;
+$("title").innerHTML = rsm.getDevice().name + ' - MQTT';
+
 if (rsm.addModel(sampleModel)) {
     var option = document.createElement("option");
     option.value = sampleModel.info.title;

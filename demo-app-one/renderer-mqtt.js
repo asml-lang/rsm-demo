@@ -5,20 +5,32 @@
 // selectively enable features needed in the rendering
 // process.
 const RunTimeStateMigration = require('rsm-node-mqtt');
-const sampleModel = require('./model-example.json');
 
 const config = {
     name: 'Demo App One',
 }
+
+const models = [];
+models.push(require('./models/search.json'));
+models.push(require('./models/sending-email.json'));
+
+
+
 const rsm = new RunTimeStateMigration(config, onState, onRequestState, onDevice)
 
-if (rsm.addModel(sampleModel)) {
-    var option = document.createElement("option");
-    option.value = sampleModel.info.title;
-    option.innerHTML = sampleModel.info.title;
-    $("#models").appendChild(option);
-    currentModel = '';
+$("#device").innerHTML = rsm.getDevice()._id;
+$("title").innerHTML = rsm.getDevice().name + ' - MQTT';
+
+for (let index = 0; index < models.length; index++) {
+    const model = models[index];
+    if (rsm.addModel(model)) {
+        var option = document.createElement("option");
+        option.value = model.info.title;
+        option.innerHTML = model.info.title;
+        $("#models").appendChild(option);
+    }
 }
+
 
 
 console.log('introducing device ...');
@@ -35,6 +47,14 @@ $("#get-data").addEventListener('click', function () {
         rsm.getStateDevice(model_name, device_id);
     }
 }, false)
+
+$("#models").addEventListener('change', function () {
+    $All('.models').forEach(el => el.style.display = 'none');
+    if ($("#models").value) {
+        console.log($("#models").value);
+        $('#' + $("#models").value).style.display = 'block';
+    }
+})
 
 
 function getDevices() {
