@@ -85,9 +85,15 @@ function getDevices() {
 function onState(data) {
     console.log('onState', data);
 
-    $("#from").value = data.state.from
-    $("#to").value = data.state.to
-    $("#body").value = data.state.body
+    if (data.model_name == 'sending-email') {
+        $("#from").value = data.state.from
+        $("#to").value = data.state.to
+        $("#body").value = data.state.body
+    }
+
+    if (data.model_name == 'search') {
+        $("#query").value = data.state.query
+    }
 
 }
 
