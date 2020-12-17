@@ -19,8 +19,5 @@
   "devDependencies": {
     "electron": "^8.2.3"
   },
-  "dependencies": {
-    "rsm-node": "^1.0.5",
-    "rsm-node-mqtt": "0.0.3"
-  }
+  "dependencies": {}
 }

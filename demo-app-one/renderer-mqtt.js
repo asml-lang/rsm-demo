@@ -4,7 +4,7 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 // process.
-const RunTimeStateMigration = require('rsm-node-mqtt');
+const RunTimeStateMigration = require('rsm-node');
 
 const config = {
     name: 'Demo App One',
@@ -16,7 +16,7 @@ models.push(require('./models/sending-email.json'));
 
 
 
-const rsm = new RunTimeStateMigration(config, onState, onRequestState, onDevice)
+const rsm = new RunTimeStateMigration(config, onStateRequest, onStateReceive, onStateMigration, onDeviceJoin, onDeviceLeave)
 
 $("#device").innerHTML = rsm.getDevice()._id;
 $("title").innerHTML = rsm.getDevice().name + ' - MQTT';
@@ -45,6 +45,17 @@ $("#get-data").addEventListener('click', function () {
         const model_name = $("#models").value;
         const device_id = $('input[name=devices]:checked').value;
         rsm.getStateDevice(model_name, device_id);
+    }
+}, false)
+
+$("#set-data").addEventListener('click', function () {
+    if ($All('input[name=devices]') !== undefined) {
+        const model_name = $("#models").value;
+        const device_id = $('input[name=devices]:checked').value;
+        // rsm.getStateDevice(model_name, device_id);
+        setState({ model_name })
+        console.log('#set-data sendState');
+        rsm.sendState(model_name, device_id);
     }
 }, false)
 
@@ -82,8 +93,8 @@ function getDevices() {
 
 }
 
-function onState(data) {
-    console.log('onState', data);
+function onStateReceive(data) {
+    console.log('onStateReceive', data);
 
     if (data.model_name == 'sending-email') {
         $("#from").value = data.state.from
@@ -97,27 +108,42 @@ function onState(data) {
 
 }
 
-function onDevice(data) {
+function onDeviceJoin(data) {
+    console.log('onDeviceJoin', data);
     $("#alert").innerHTML = `'${data.device.name}' joined '${data.model_name}'`;
     $("#alert").style.opacity = '1';
     setTimeout(() => {
         $("#alert").style.opacity = '0';
     }, 2000);
-    console.log('onDevice', data);
+    getDevices();
 }
 
-function onRequestState(data) {
-    console.log('onRequestState', data);
+function onDeviceLeave(data) {
+    console.log('onDeviceLeave', data);
+    $("#alert").innerHTML = `'${data.name}' left`;
+    $("#alert").style.opacity = '1';
+    setTimeout(() => {
+        $("#alert").style.opacity = '0';
+    }, 2000);
+    getDevices();
+}
 
-    var state = {
-        from: $("#from").value,
-        to: $("#to").value,
-        body: $("#body").value
-    }
-    rsm.setState(data.model_name, state);
+function onStateRequest(data) {
+    console.log('onRequestState', data);
+    setState(data);
     rsm.sendState(data.model_name, data.device._id);
 }
-
+function onStateMigration(data) {
+    console.log('onStateMigration', data);
+}
+function setState(data) {
+    if (data.model_name == 'sending-email') {
+        var state = { from: $("#from").value, to: $("#to").value, body: $("#body").value }
+    } else if (data.model_name == 'search') {
+        var state = { query: $("#query").value }
+    }
+    rsm.setState(data.model_name, state);
+}
 function $(selector) {
     return document.querySelector(selector)
 }
