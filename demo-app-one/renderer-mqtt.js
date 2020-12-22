@@ -106,6 +106,8 @@ function onStateReceive(data) {
         $("#query").value = data.state.query
     }
 
+    rsm.setMigration(data.model_name, data.device._id);
+
 }
 
 function onDeviceJoin(data) {
@@ -133,9 +135,21 @@ function onStateRequest(data) {
     setState(data);
     rsm.sendState(data.model_name, data.device._id);
 }
+
 function onStateMigration(data) {
     console.log('onStateMigration', data);
+
+    if (data.model_name == 'sending-email') {
+        $("#from").value = ""
+        $("#to").value = ""
+        $("#body").value = ""
+    }
+
+    if (data.model_name == 'search') {
+        $("#query").value = ""
+    }
 }
+
 function setState(data) {
     if (data.model_name == 'sending-email') {
         var state = { from: $("#from").value, to: $("#to").value, body: $("#body").value }
@@ -144,6 +158,7 @@ function setState(data) {
     }
     rsm.setState(data.model_name, state);
 }
+
 function $(selector) {
     return document.querySelector(selector)
 }
