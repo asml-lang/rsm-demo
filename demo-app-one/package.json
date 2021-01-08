@@ -19,5 +19,7 @@
   "devDependencies": {
     "electron": "^8.2.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "rsm-node": "^1.0.10"
+  }
 }
