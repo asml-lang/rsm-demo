@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'">
+  <meta http-equiv="X-Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'">
+  <title>Demo App - MQTT</title>
+  <link rel="stylesheet" href="./light.min.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div id="alert"></div>
+  <div>device id: <span id="device"></span></div>
+  <hr>
+  <h3>Current State</h3>
+  <select name="models" id="models">
+    <option value="">Select a state</option>
+
+  </select>
+
+  <hr>
+
+  <div class="models" id="sending-email" style="display: none">
+    <label for="from">From:</label>
+    <input type="text" id="from" value="demo-one@mail.upb.de">
+    <label for="from">To:</label>
+    <input type="text" id="to" value="demo-two@upb.de">
+    <label for="from">Subject:</label>
+    <input type="text" id="subject" value="Test Subject">
+    <label for="from">Body:</label>
+    <textarea id="body" name="" id="" cols="20" rows="2">this is a text from demo app</textarea>
+  </div>
+
+  <div class="models" id="search" style="display: none">
+    <label for="query">search:</label>
+    <input type="text" id="query" value="" placeholder="your search phrase">
+    <label for="query">submit:</label>
+    <select name="submit" id="submit">
+      <option value="false">No</option>
+      <option value="true">Yes</option>
+    </select>
+  </div>
+
+  <hr>
+
+  <h3>Migration method</h3>
+  <select name="method" id="method">
+    <option value="push">Set Data (Push)</option>
+    <option value="pull">Get Data (Pull)</option>
+  </select>
+  <hr>
+
+  <h3>Devices</h3>
+  <!-- <button id="get-devices">Get Devices</button> -->
+  <div id="devices"></div>
+
+  <hr>
+  <button id="migrate">Migrate</button>
+
+  <script src="./renderer.js"></script>
+</body>
+
+</html>

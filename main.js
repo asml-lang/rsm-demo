@@ -2,11 +2,6 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
-let extra = '';
-console.log(process.argv)
-if (process.argv[2] !== undefined) {
-  extra = '-' + process.argv[2];
-}
 
 function createWindow() {
   // Create the browser window.
@@ -20,7 +15,7 @@ function createWindow() {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index' + extra + '.html')
+  mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()

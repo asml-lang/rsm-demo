@@ -20,6 +20,6 @@
     "electron": "^8.2.3"
   },
   "dependencies": {
-    "rsm-node": "^1.0.10"
+    "rsm-node": "^1.0.14"
   }
 }

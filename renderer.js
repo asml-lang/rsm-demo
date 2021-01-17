@@ -7,7 +7,7 @@
 const RunTimeStateMigration = require('rsm-node');
 
 const config = {
-    name: 'Demo App One',
+    name: 'Demo App',
 }
 
 const models = [];
@@ -36,28 +36,32 @@ for (let index = 0; index < models.length; index++) {
 console.log('introducing device ...');
 rsm.introduce();
 
-$("#get-devices").addEventListener('click', function () {
-    getDevices()
-}, false)
+// $("#get-devices").addEventListener('click', function () {
+//     getDevices()
+// }, false)
 
-$("#get-data").addEventListener('click', function () {
-    if ($All('input[name=devices]') !== undefined) {
+function getData() {
+    if ($('input[name=devices]:checked') !== null) {
         const model_name = $("#models").value;
         const device_id = $('input[name=devices]:checked').value;
         rsm.getStateDevice(model_name, device_id);
+    } else {
+        alert('Select a device');
     }
-}, false)
+}
 
-$("#set-data").addEventListener('click', function () {
-    if ($All('input[name=devices]') !== undefined) {
-        const model_name = $("#models").value;
+function setDate() {
+    if ($('input[name=devices]:checked') !== null) {
+        // const model_name = $("#models").value;
         const device_id = $('input[name=devices]:checked').value;
         // rsm.getStateDevice(model_name, device_id);
-        setState({ model_name })
+        // setState({ model_name })
         console.log('#set-data sendState');
         rsm.sendState(model_name, device_id);
+    } else {
+        alert('Select a device');
     }
-}, false)
+}
 
 $("#models").addEventListener('change', function () {
     $All('.models').forEach(el => el.style.display = 'none');
@@ -67,28 +71,65 @@ $("#models").addEventListener('change', function () {
     }
 })
 
+$("#method").addEventListener('change', function () {
+    if ($("#method").value == 'pull') {
+        getDevices(true)
+    } else {
+        getDevices(false)
+    }
 
-function getDevices() {
+})
+
+$("#migrate").addEventListener('click', function () {
+    if ($("#method").value == 'pull') {
+        getData();
+    } else {
+        setDate();
+    }
+})
+
+$All("input").forEach(inpt => {
+    inpt.addEventListener('change', function () {
+        const model_name = $("#models").value;
+        if (model_name) {
+            console.log('set state', model_name)
+            setState({ model_name })
+        }
+    })
+})
+
+
+function getDevices(has_state) {
+    has_state = has_state || false;
     console.log('get devices');
     const model_name = $("#models").value;
-    devices = rsm.getDevices(model_name);
-    console.log(devices);
-    $('#devices').innerHTML = '<ul></ul>';
 
-    for (i = 0; i < devices.length; i++) {
-        var selecttag1 = document.createElement("input");
-        selecttag1.setAttribute("type", "radio");
-        selecttag1.setAttribute("name", "devices");
-        selecttag1.setAttribute("value", devices[i]._id);
-        selecttag1.setAttribute("id", "irrSelectNo" + i);
+    if (model_name) {
+        devices = rsm.getDevices(model_name, has_state);
+        console.log(devices);
+        if (devices.length) {
+            $('#devices').innerHTML = '<ul></ul>';
 
-        var lbl1 = document.createElement("label");
-        lbl1.innerHTML = devices[i].name;
+            for (i = 0; i < devices.length; i++) {
+                var selecttag1 = document.createElement("input");
+                selecttag1.setAttribute("type", "radio");
+                selecttag1.setAttribute("name", "devices");
+                selecttag1.setAttribute("value", devices[i]._id);
+                selecttag1.setAttribute("id", "irrSelectNo" + i);
 
-        var li = document.createElement("li");
-        li.appendChild(selecttag1);
-        li.appendChild(lbl1);
-        $('#devices ul').appendChild(li);
+                var lbl1 = document.createElement("label");
+                lbl1.innerHTML = devices[i].name;
+
+                var li = document.createElement("li");
+                li.appendChild(selecttag1);
+                li.appendChild(lbl1);
+                $('#devices ul').appendChild(li);
+            }
+        } else {
+            alert(`There is not device for '${model_name}'`)
+        }
+    } else {
+        alert('Select a state');
     }
 
 }
@@ -99,11 +140,13 @@ function onStateReceive(data) {
     if (data.model_name == 'sending-email') {
         $("#from").value = data.state.from
         $("#to").value = data.state.to
+        $("#subject").value = data.state.subject
         $("#body").value = data.state.body
     }
 
     if (data.model_name == 'search') {
         $("#query").value = data.state.query
+        $("#submit").value = data.state.submit
     }
 
     rsm.setMigration(data.model_name, data.device._id);
@@ -117,7 +160,6 @@ function onDeviceJoin(data) {
     setTimeout(() => {
         $("#alert").style.opacity = '0';
     }, 2000);
-    getDevices();
 }
 
 function onDeviceLeave(data) {
@@ -127,12 +169,10 @@ function onDeviceLeave(data) {
     setTimeout(() => {
         $("#alert").style.opacity = '0';
     }, 2000);
-    getDevices();
 }
 
 function onStateRequest(data) {
     console.log('onRequestState', data);
-    setState(data);
     rsm.sendState(data.model_name, data.device._id);
 }
 
@@ -147,14 +187,15 @@ function onStateMigration(data) {
 
     if (data.model_name == 'search') {
         $("#query").value = ""
+        $("#submit").value = "false"
     }
 }
 
 function setState(data) {
     if (data.model_name == 'sending-email') {
-        var state = { from: $("#from").value, to: $("#to").value, body: $("#body").value }
+        var state = { from: $("#from").value, to: $("#to").value, subject: $("#subject").value, body: $("#body").value }
     } else if (data.model_name == 'search') {
-        var state = { query: $("#query").value }
+        var state = { query: $("#query").value, submit: $("#submit").value == 'true' }
     }
     rsm.setState(data.model_name, state);
 }

@@ -21,14 +21,13 @@
             "type": "string",
             "format": "email"
         },
+        "subject": {
+            "description": "The subject text of the email",
+            "type": "string"
+        },
         "body": {
             "description": "The body text of the email",
             "type": "string"
         }
-    },
-    "required": [
-        "from",
-        "to",
-        "body"
-    ]
+    }
 }
