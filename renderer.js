@@ -52,7 +52,7 @@ function getData() {
 
 function setDate() {
     if ($('input[name=devices]:checked') !== null) {
-        // const model_name = $("#models").value;
+        const model_name = $("#models").value;
         const device_id = $('input[name=devices]:checked').value;
         // rsm.getStateDevice(model_name, device_id);
         // setState({ model_name })
@@ -74,7 +74,7 @@ $("#models").addEventListener('change', function () {
 $("#method").addEventListener('change', function () {
     if ($("#method").value == 'pull') {
         getDevices(true)
-    } else {
+    } else if ($("#method").value == 'push') {
         getDevices(false)
     }
 
@@ -83,7 +83,7 @@ $("#method").addEventListener('change', function () {
 $("#migrate").addEventListener('click', function () {
     if ($("#method").value == 'pull') {
         getData();
-    } else {
+    } else if ($("#method").value == 'push') {
         setDate();
     }
 })
@@ -103,13 +103,11 @@ function getDevices(has_state) {
     has_state = has_state || false;
     console.log('get devices');
     const model_name = $("#models").value;
-
+    $('#devices').innerHTML = '<ul></ul>';
     if (model_name) {
         devices = rsm.getDevices(model_name, has_state);
         console.log(devices);
         if (devices.length) {
-            $('#devices').innerHTML = '<ul></ul>';
-
             for (i = 0; i < devices.length; i++) {
                 var selecttag1 = document.createElement("input");
                 selecttag1.setAttribute("type", "radio");
