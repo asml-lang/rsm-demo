@@ -88,7 +88,7 @@ $("#migrate").addEventListener('click', function () {
     }
 })
 
-$All("input").forEach(inpt => {
+$All(".data input, .data select").forEach(inpt => {
     inpt.addEventListener('change', function () {
         const model_name = $("#models").value;
         if (model_name) {

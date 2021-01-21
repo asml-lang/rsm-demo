@@ -24,26 +24,27 @@
   </select>
 
   <hr>
+  <div class="data">
+    <div class="models" id="sending-email" style="display: none">
+      <label for="from">From:</label>
+      <input type="text" id="from" value="demo-one@mail.upb.de">
+      <label for="from">To:</label>
+      <input type="text" id="to" value="demo-two@upb.de">
+      <label for="from">Subject:</label>
+      <input type="text" id="subject" value="Test Subject">
+      <label for="from">Body:</label>
+      <textarea id="body" name="" id="" cols="20" rows="2">this is a text from demo app</textarea>
+    </div>
 
-  <div class="models" id="sending-email" style="display: none">
-    <label for="from">From:</label>
-    <input type="text" id="from" value="demo-one@mail.upb.de">
-    <label for="from">To:</label>
-    <input type="text" id="to" value="demo-two@upb.de">
-    <label for="from">Subject:</label>
-    <input type="text" id="subject" value="Test Subject">
-    <label for="from">Body:</label>
-    <textarea id="body" name="" id="" cols="20" rows="2">this is a text from demo app</textarea>
-  </div>
-
-  <div class="models" id="search" style="display: none">
-    <label for="query">search:</label>
-    <input type="text" id="query" value="" placeholder="your search phrase">
-    <label for="query">submit:</label>
-    <select name="submit" id="submit">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
-    </select>
+    <div class="models" id="search" style="display: none">
+      <label for="query">search:</label>
+      <input type="text" id="query" value="" placeholder="your search phrase">
+      <label for="query">submit:</label>
+      <select name="submit" id="submit">
+        <option value="false">No</option>
+        <option value="true">Yes</option>
+      </select>
+    </div>
   </div>
 
   <hr>
