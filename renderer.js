@@ -88,7 +88,7 @@ $("#migrate").addEventListener('click', function () {
     }
 })
 
-$All(".data input, .data select").forEach(inpt => {
+$All(".data input, .data select, .data textarea").forEach(inpt => {
     inpt.addEventListener('change', function () {
         const model_name = $("#models").value;
         if (model_name) {
@@ -181,6 +181,7 @@ function onStateMigration(data) {
         $("#from").value = ""
         $("#to").value = ""
         $("#body").value = ""
+        $("#subject").value = ""
     }
 
     if (data.model_name == 'search') {
