@@ -7,7 +7,7 @@
 const RunTimeStateMigration = require('rsm-node');
 
 const config = {
-    name: 'Demo App',
+    name: 'Demo App - MAC',
 }
 
 const models = [];
@@ -88,14 +88,22 @@ $("#migrate").addEventListener('click', function () {
     }
 })
 
-$All(".data input, .data select, .data textarea").forEach(inpt => {
-    inpt.addEventListener('change', function () {
-        const model_name = $("#models").value;
-        if (model_name) {
-            console.log('set state', model_name)
-            setState({ model_name })
-        }
-    })
+// $All(".data input, .data select, .data textarea").forEach(inpt => {
+//     inpt.addEventListener('change', function () {
+//         const model_name = $("#models").value;
+//         if (model_name) {
+//             console.log('set state', model_name)
+//             setState({ model_name })
+//         }
+//     })
+// })
+
+$("#set-all-state").addEventListener('click', function () {
+    const model_name = $("#models").value;
+    if (model_name) {
+        console.log('set state', model_name)
+        setState({ model_name })
+    }
 })
 
 
