@@ -144,15 +144,15 @@ function onStateReceive(data) {
     console.log('onStateReceive', data);
 
     if (data.model_name == 'sending-email') {
-        $("#from").value = data.state.from
-        $("#to").value = data.state.to
-        $("#subject").value = data.state.subject
-        $("#body").value = data.state.body
+        $("#from").value = data.state.from;
+        $("#to").value = data.state.to.join(',');
+        $("#subject").value = data.state.subject;
+        $("#body").value = data.state.body;
     }
 
     if (data.model_name == 'search') {
-        $("#query").value = data.state.query
-        $("#submit").value = data.state.submit
+        $("#query").value = data.state.query;
+        $("#submit").value = data.state.submit;
     }
 
     rsm.setMigration(data.model_name, data.device._id);
@@ -200,7 +200,7 @@ function onStateMigration(data) {
 
 function setState(data) {
     if (data.model_name == 'sending-email') {
-        var state = { from: $("#from").value, to: $("#to").value, subject: $("#subject").value, body: $("#body").value }
+        var state = { from: $("#from").value, to: $("#to").value.split(','), subject: $("#subject").value, body: $("#body").value }
     } else if (data.model_name == 'search') {
         var state = { query: $("#query").value, submit: $("#submit").value == 'true' }
     }
